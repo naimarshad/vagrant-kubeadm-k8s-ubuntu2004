@@ -36,18 +36,53 @@ chmod +x /vagrant/configs/join.sh
 
 kubeadm token create --print-join-command > /vagrant/configs/join.sh
 
+kubectl taint node master-node node-role.kubernetes.io/control-plane:NoSchedule-
+kubectl taint node master-node node-role.kubernetes.io/master:NoSchedule-
+
 # Install Calico Network Plugin
 
 curl https://docs.projectcalico.org/manifests/calico.yaml -O
 
 kubectl apply -f calico.yaml
 
-# Install Metrics Server
+# Deploy MetalLB 
+echo "Deploying MetalLB"
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.7/config/manifests/metallb-native.yaml
 
+echo "Waiting 80 Seconds to come up the MetlLB Deployment"
+
+sleep 80
+ 
+cat <<EOF | kubectl apply -f -
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: sample-pool
+  namespace: metallb-system
+spec:
+  addresses:
+  - 192.168.50.240-192.168.50.250
+EOF
+
+cat <<EOF | kubectl apply -f -
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: example
+  namespace: metallb-system
+spec:
+  ipAddressPools:
+  - sample-pool
+EOF
+
+
+# Install Nginx Ingress Controller
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.5.1/deploy/static/provider/cloud/deploy.yaml
+
+# Install Metrics Server
 kubectl apply -f https://raw.githubusercontent.com/scriptcamp/kubeadm-scripts/main/manifests/metrics-server.yaml
 
 # Install Kubernetes Dashboard
-
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.6.1/aio/deploy/recommended.yaml
 
 # Create Dashboard User
