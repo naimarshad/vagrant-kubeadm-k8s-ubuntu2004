@@ -1,42 +1,24 @@
-
-# Vagrantfile and Scripts to Automate Kubernetes Setup using Kubeadm [Practice Environment for CKA/CKAD and CKS Exams]
+# Vagrantfile and Scripts to Automate Kubernetes Setup using Kubeadm [Practice Environment for CKA/CKAD and CKS Exams] With MetalLB as LoadBalancer & Nginx Ingress Controller
 
 ## Documentation
 
 Current k8s version for CKA, CKAD and CKS exam: 1.24
 
-Refer this link for documentation: https://devopscube.com/kubernetes-cluster-vagrant/
+CKA, CKAD, CKS or KCNA Coupon Codes
 
-## 🚀 CKA, CKAD, CKS or KCNA Coupon Codes
-
-If you are preparing for Prometheus Certification, CKA, CKAD, CKS, or KCNA exam, **save 50%** today using code **CYBER22CC** at https://kube.promo/latest. It is a limited-time offer. Or Check out [Linux Foundation coupon](https://scriptcrunch.com/linux-foundation-coupon/) page for the latest voucher codes.
+If you are preparing for Prometheus Certification, CKA, CKAD, CKS, or KCNA exam, **save 50%** today using code **CYBER22CC** at https://kube.promo/latest. It is a limited-time offer.
 
 ## Prerequisites
 
 1. Working Vagrant setup
-2. 8 Gig + RAM workstation as the Vms use 3 vCPUS and 4+ GB RAM
-
-## For MAC/Linux Users
-
-Latest version of Virtualbox for Mac/Linux can cause issues because you have to create/edit the /etc/vbox/networks.conf file and add:
-<pre>* 0.0.0.0/0 ::/0</pre>
-
-or run below commands
-
-```shell
-sudo mkdir -p /etc/vbox/
-echo "* 0.0.0.0/0 ::/0" | sudo tee -a /etc/vbox/networks.conf
-```
-
-So that the host only networks can be in any range, not just 192.168.56.0/21 as described here:
-https://discuss.hashicorp.com/t/vagrant-2-2-18-osx-11-6-cannot-create-private-network/30984/23
+2. 16 Gig + RAM workstation as the VMs use 5 vCPUS and 4+ GB RAM
 
 ## Usage/Examples
 
 To provision the cluster, execute the following commands.
 
 ```shell
-git clone https://github.com/scriptcamp/vagrant-kubeadm-kubernetes.git
+git clone https://github.com/naimarshad/vagrant-kubeadm-k8s-ubuntu2004.git
 cd vagrant-kubeadm-kubernetes
 vagrant up
 ```
@@ -44,7 +26,7 @@ vagrant up
 ## Set Kubeconfig file variable
 
 ```shell
-cd vagrant-kubeadm-kubernetes
+cd vagrant-kubeadm-k8s-ubuntu2004
 cd configs
 export KUBECONFIG=$(pwd)/config
 ```
@@ -66,7 +48,7 @@ http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kube
 Vagrant up will create the admin user token and saves in the configs directory.
 
 ```shell
-cd vagrant-kubeadm-kubernetes
+cd vagrant-kubeadm-k8s-ubuntu2004
 cd configs
 cat token
 ```
@@ -88,4 +70,3 @@ vagrant up
 ```shell
 vagrant destroy -f
 ```
-
