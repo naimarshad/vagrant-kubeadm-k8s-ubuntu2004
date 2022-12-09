@@ -16,13 +16,11 @@ Vagrant.configure("2") do |config|
       echo "$IP_NW$((IP_START+3)) worker-node03" >> /etc/hosts
   SHELL
 
-  # config.vm.box = "bento/ubuntu-22.04"
   config.vm.box = "generic/ubuntu2004"  
   config.vm.box_check_update = true
   config.vm.synced_folder "./", "/vagrant", type: "virtiofs"
 
   config.vm.define "master" do |master|
-    # master.vm.box = "bento/ubuntu-18.04"
     master.vm.hostname = "master-node"
     master.vm.network "private_network", ip: IP_NW + "#{IP_START}"
     master.vm.provider "libvirt" do |vb|
