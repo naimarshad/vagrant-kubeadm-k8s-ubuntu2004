@@ -20,7 +20,7 @@ To provision the cluster, execute the following commands.
 ```shell
 git clone https://github.com/naimarshad/vagrant-kubeadm-k8s-ubuntu2004.git
 cd vagrant-kubeadm-kubernetes
-vagrant up
+vagrant up master && vagrant up
 ```
 
 ## Set Kubeconfig file variable
